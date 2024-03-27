@@ -3,6 +3,7 @@
 My idea is to create a visual simulation of a queue at an imaginary post office. The simulation will have a standard distribution function of the number of tasks for each customer, but the user will be able to set their own values ​​for the probability that a customer has x number of tasks. Sometimes the queue flow will be disrupted by the robber, and at the end of the day, the statistics will be displayed.
 ### Possible difficulties:
 1.) Limiting the values ​​of the distribution function. The user should only be able to set values ​​that result in the sum of all probabilities for x number of tasks being 100%.
+
 2.) The logic for the robber is somewhat complex, as several variables change simultaneously, and the program becomes more dynamic. Therefore, that part will require more time to implement.
 
 ## User Scenarios:
