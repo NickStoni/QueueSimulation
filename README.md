@@ -1,19 +1,19 @@
-# Specifikation
-## Inledning:
-Min idé är att skapa en visuell simulering av kön till ett imaginärt postkontor. Simuleringen kommer ha en standard fördelningsfunktion av antal ärenden för varje kund, men användaren kommer kunna sätta egna värden på sannolikheten att en kund har x antal ärenden. Ibland kommer köflödet störas av rånaren, och i slutet av dagen kommer statistiken visas.
-### De möjliga svårigheterna är:
-1.)        Att begränsa värden på fördelningsfunktionen. Användaren ska bara kunna sätta värden som leder till att summan av alla sannolikheter för x antal ärenden blir 100%.
-2.) Logiken för rånaren är någorlunda komplex, eftersom flera variabler ändras samtidigt och programmet blir mer dynamiskt. Därför kommer den biten kräva mer tid att implementera.
+# Specification
+## Introduction:
+My idea is to create a visual simulation of a queue at an imaginary post office. The simulation will have a standard distribution function of the number of tasks for each customer, but the user will be able to set their own values ​​for the probability that a customer has x number of tasks. Sometimes the queue flow will be disrupted by the robber, and at the end of the day, the statistics will be displayed.
+### Possible difficulties:
+1.) Limiting the values ​​of the distribution function. The user should only be able to set values ​​that result in the sum of all probabilities for x number of tasks being 100%.
+2.) The logic for the robber is somewhat complex, as several variables change simultaneously, and the program becomes more dynamic. Therefore, that part will require more time to implement.
 
-## Användarscenarier:
-### Se köflödet med standardparametrar: 
-Användaren öppnar programmet och trycker på knappen ”Start” utan att mata in egna parametrar. Då körs simuleringen med standardfördelningsfunktionen som ges av (0.5)^x där x är antal ärenden, t.ex. kommer ½ av alla kunder ha 1 ärende. Användaren får se hur kön flöder. Ibland kommer rånaren och då kan användaren åskåda hur köflödet påverkas av detta. Användaren tittar på statistiken som visas upp efter att dagen är slut och stänger programmet.
-### Simulera kön med parameterjusteringar: 
-Användaren startar programmet, justerar reglaget som ändrar sannolikheten att en kund med x antal ärenden inträffar och trycker på ”Start”. Användaren studerar visuellt hur köflödet beror på antal kunder med ett visst antal ärenden och även på om störningar i form av rån förekommer. Användaren får statistik i slutet av dagen, den här gången stänger användaren av förekomsten av rånaren och klickar ”Start”. Efter simuleringen är klar väljer användaren att stänga programmet.
-### Studera statistik: 
-Användaren startar programmet och väljer egna parametrar genom att sätta sannolikheten på att förekomsten av kunder med 1 ärende till 20%,                2 ärenden till 30%, 3 ärenden till 10%, 4 till 5% och 5+ ärenden till 35%. Därefter klickar hen på ”Start”-knappen. Simuleringen körs och användaren får se hur kön flöder genom dagen. Efter simuleringen får användaren statistiken över dagen och antecknar den. Simuleringen körs en gång till med sannolikheten att kunder med 1 ärende är 100%. Användaren antecknar statistiken igen och jämför hur fördelningen påverkade den genomsnittliga väntetiden per kund. Därefter stänger användaren programmet.
+## User Scenarios:
+### View the queue flow with default parameters:
+The user opens the program and presses the "Start" button without entering their own parameters. Then the simulation runs with the default distribution function given by (0.5)^x where x is the number of tasks, for example, half of all customers will have 1 task. The user gets to see how the queue flows. Sometimes the robber appears, and then the user can observe how the queue flow is affected by this. The user looks at the statistics displayed at the end of the day and closes the program.
+### Simulate the queue with parameter adjustments:
+The user starts the program, adjusts the slider that changes the probability that a customer with x number of tasks occurs, and presses "Start". The user visually studies how the queue flow depends on the number of customers with a certain number of tasks and also on whether disturbances in the form of robberies occur. The user receives statistics at the end of the day, this time the user turns off the presence of the robber and clicks "Start". After the simulation is complete, the user chooses to close the program.
+### Study statistics:
+The user starts the program and selects their own parameters by setting the probability of the occurrence of customers with 1 task to 20%, 2 tasks to 30%, 3 tasks to 10%, 4 tasks to 5%, and 5+ tasks to 35%. Then the user clicks the "Start" button. The simulation runs, and the user gets to see how the queue flows throughout the day. After the simulation, the user receives statistics for the day and notes them down. The simulation runs again with the probability of customers with 1 task set to 100%. The user notes the statistics again and compares how the distribution affected the average waiting time per customer. Then the user closes the program.
 
-## Programskelett
+## Program Skeleton
 ```
 "Global parameters"
 Run_speed = 1
@@ -119,6 +119,5 @@ def calc_average_await_t():
     """Calculates average waiting time"""
     pass
 ```
-## Dataflöde:
-Programmet börjar med att placera i de globala variablerna i minnet, sedan skapas ett officeobjekt. Officeobjektet innehåller status (antingen är dörren öppen eller stängd), tiden per ärende och en lista av nuvarande kunder. Varje kund innehåller sin färg, tid som hen kom in, positionen i kön, antal ärenden och om hen är en rånare. Användaren presenteras med en meny där hen kan justera värden på sannolikheten att en ny kund dyker upp varje minut, förekomsten av rån, hur ofta kontoret lyckas försvara sig, hur ofta kunder dör i ett rån OSV. Därefter körs simulationen och varje minut kallas funktionen spawn_client som med sannolikheten given av N_client_probability kommer skapa ett objekt Client med slumpmässig färg, antal ärenden och om hen är en rånare. Objektet placeras i minnet i listan clients hos Office-objektet och funktionen serve körs. Efter ett visst antal minuter som ges av t_task tas objektet bort från listan clients, variablerna Tot_num_clients, Tot_await_time som ansvarar för statistiken uppdateras samt nästa kund börjar betjänas. När tiden blir 1800 ändras status hos office-objektet till 0, alla kunder i clients betjänas och sedan visas statistiken på skärmen.
-
+## Data Flow:
+The program starts by placing the global variables in memory, then an office object is created. The office object contains status (whether the door is open or closed), the time per task, and a list of current customers. Each customer contains their color, arrival time, position in the queue, number of tasks, and whether they are a robber. The user is presented with a menu where they can adjust values ​​for the probability that a new customer appears every minute, the occurrence of robberies, how often the office successfully defends itself, how often customers die in a robbery, etc. Then the simulation runs, and every minute the spawn_client function is called, which with the probability given by N_client_probability will create a Client object with a random color, number of tasks, and whether they are a robber. The object is placed in memory in the clients list of the Office object, and the serve function is called. After a certain number of minutes given by t_task, the object is removed from the clients list, the variables Tot_num_clients, Tot_await_time responsible for statistics are updated, and the next customer begins to be served. When the time reaches 1800, the status of the office object changes to 0, all customers in clients are served, and then the statistics are displayed on the screen.
